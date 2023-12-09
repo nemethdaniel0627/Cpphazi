@@ -5,40 +5,63 @@
 
 using namespace std;
 
-struct NapiHom {
-    int reggel;
-    int del;
-    int este;
+struct Koordinata
+{
+    double hossz;
+    double szeless;
 };
 
-vector<NapiHom> beolvas(ifstream& bf) {
-    vector<NapiHom> napiHomertek;
-    while(bf.good()) {
-        char szemet;
-        NapiHom nap;
-        bf >> nap.reggel >> szemet >> nap.del >> szemet >> nap.este;
-        napiHomertek.push_back(nap);
-    }
-    return napiHomertek;
+struct Megallo
+{
+    string azonosito;
+    string nev;
+    Koordinata koordinata;
+};
+
+Megallo feldolgoz(ifstream &sor)
+{
+    Megallo megallo;
+    string tmp;
+    getline(sor, megallo.azonosito, ';');
+    getline(sor, megallo.nev, ';');
+    sor >> megallo.koordinata.szeless;
+    sor >> megallo.koordinata.hossz;
+    getline(sor, tmp) >> ws;
+    return megallo;
 }
 
-int napiHoIngad(vector<NapiHom> napihomertek) {
-    double maxAtlag = 0;
-    int melyikNap = 0;
-    for (std::size_t i = 0; i < napihomertek.size(); i++) {
-        double atlag = (abs(napihomertek[i].reggel - napihomertek[i].del) + abs(napihomertek[i].del - napihomertek[i].este)) / 2;
-        if (maxAtlag < atlag) {
-            maxAtlag = atlag;
-            melyikNap = i+1;
-        }
+void beolvas(string fajlnev)
+{
+    ifstream bf(fajlnev);
+    string sor;
+    vector<Megallo> megallok;
+    if (bf.good())
+    {
+        getline(bf, sor) >> ws;
     }
-    return melyikNap;
+    while (bf.good())
+    {
+        megallok.push_back(feldolgoz(bf));
+    }
 }
 
-int main() {
-    ifstream bf;
-    bf.open("homertek.txt");
-    vector<NapiHom> napiHomertek = beolvas(bf);
-    cout << napiHoIngad(napiHomertek) << endl;
+void kiir(vector<Megallo>& adatok) {
+    for (Megallo megallo : adatok) {
+        cout << megallo.azonosito << " " << megallo.nev << " " << megallo.koordinata.szeless << " " << megallo.koordinata.hossz << endl; 
+    }
+}
+
+int megalloKeres(string keres, vector<Megallo> adatok) {
+    int counter = 0;
+    for (Megallo megallo : adatok) {
+        if (megallo.nev == keres) 
+            counter++;
+    }
+    return counter;
+}
+
+int main()
+{
+    beolvas("stops.txt");
     return 0;
 }
