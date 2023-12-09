@@ -30,31 +30,33 @@ Megallo feldolgoz(ifstream &sor)
     return megallo;
 }
 
-void beolvas(string fajlnev)
+vector<Megallo> beolvas(string fajlnev)
 {
     ifstream bf(fajlnev);
     string sor;
     vector<Megallo> megallok;
-    if (bf.good())
-    {
-        getline(bf, sor) >> ws;
-    }
+    getline(bf, sor) >> ws;
     while (bf.good())
     {
         megallok.push_back(feldolgoz(bf));
     }
+    return megallok;
 }
 
-void kiir(vector<Megallo>& adatok) {
-    for (Megallo megallo : adatok) {
-        cout << megallo.azonosito << " " << megallo.nev << " " << megallo.koordinata.szeless << " " << megallo.koordinata.hossz << endl; 
+void kiir(vector<Megallo> &adatok)
+{
+    for (Megallo megallo : adatok)
+    {
+        cout << megallo.azonosito << " " << megallo.nev << " " << megallo.koordinata.szeless << " " << megallo.koordinata.hossz << endl;
     }
 }
 
-int megalloKeres(string keres, vector<Megallo> adatok) {
+int megalloKeres(string keres, vector<Megallo> adatok)
+{
     int counter = 0;
-    for (Megallo megallo : adatok) {
-        if (megallo.nev == keres) 
+    for (Megallo megallo : adatok)
+    {
+        if (megallo.nev == keres)
             counter++;
     }
     return counter;
@@ -62,6 +64,7 @@ int megalloKeres(string keres, vector<Megallo> adatok) {
 
 int main()
 {
-    beolvas("stops.txt");
+    vector<Megallo> megallok = beolvas("stops.txt");
+    kiir(megallok);
     return 0;
 }
